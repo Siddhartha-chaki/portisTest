@@ -7,6 +7,7 @@ class FileInput extends Component {
     this.onClierHandler = this.onClierHandler.bind(this);
   }
 
+  
   onClierHandler() {}
 
   uploadFile(event) {
