@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { keccak256 } from 'web3-utils'
-import { Document, Page, pdfjs } from "react-pdf";
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import { PDFDownloadLink, Document, Page, pdfjs } from "react-pdf";
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
+  pdfjs.version
+}/pdf.worker.js`;
 
-export default class App extends Component {
-  state = { numPages: null, pageNumber: 1 ,hash: "" };
+export default class PDFViewer extends Component {
+  state = { numPages: null, pageNumber: 1, hash: "" };
 
-  onDocumentLoadSuccess = ({ numPages }) => {
-    this.setState({ numPages });
-
+  onDocumentLoadSuccess = () => {
+    //this.setState({ numPages });
+    console.log(this);
   };
 
   goToPrevPage = () =>
@@ -18,7 +19,7 @@ export default class App extends Component {
 
   render() {
     const { pageNumber, numPages } = this.state;
-
+    console.log(this.props.filename);
     return (
       <div>
         <nav>
@@ -27,15 +28,17 @@ export default class App extends Component {
         </nav>
 
         <div style={{ width: 600 }}>
-          <Document file='/certificates/test2.pdf' onLoadSuccess={this.onDocumentLoadSuccess}>
+          <Document
+            file={this.props.filename}
+            onLoadSuccess={this.onDocumentLoadSuccess}
+          >
             <Page pageNumber={pageNumber} width={600} />
           </Document>
         </div>
-
         <p>
           Page {pageNumber} of {numPages}
         </p>
-
+       
       </div>
     );
   }
