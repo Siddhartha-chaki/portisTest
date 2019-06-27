@@ -47,10 +47,13 @@ class FileInput extends Component {
     if (file) {
       var reader = new FileReader();
       reader.onload = () => {
-        this.setState({ hash: sha256(reader.result) });
+        
         console.log(reader.result);
+        var c = String.fromCharCode.apply(null, new Uint8Array(reader.result));
+        console.log(c);
+        this.setState({ hash: sha256(c) });
       };
-      reader.readAsBinaryString(file);
+      reader.readAsArrayBuffer(file);
     }
   }
 
