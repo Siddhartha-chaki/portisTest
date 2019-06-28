@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import sha256 from "crypto-js/sha256";
+import * as crypto from "crypto-js";
 import axios from "axios";
 import { Progress } from "reactstrap";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,9 +17,8 @@ class FileInput extends Component {
   }
 
   onClientHandler() {
-    console.log("Hash :" + this.state.hash);
-    //console.log("Hash :" + sha256());
-    /*const data = new FormData();
+    console.log("File Hash :" + this.state.filehash);
+    const data = new FormData();
     data.append("file", this.state.selectedFile);
     data.append("filehash", this.state.hash);
     console.log("hash" + this.state.hash);
@@ -37,7 +36,7 @@ class FileInput extends Component {
       })
       .catch(err => {
         toast.error("upload fail");
-      });*/
+      });
   }
 
   uploadFile(event) {
@@ -47,11 +46,15 @@ class FileInput extends Component {
     if (file) {
       var reader = new FileReader();
       reader.onload = () => {
-        
-        console.log(reader.result);
-        var c = String.fromCharCode.apply(null, new Uint8Array(reader.result));
-        console.log(c);
-        this.setState({ hash: sha256(c) });
+        var uint = new Uint8Array(reader.result);
+        var sha = crypto.algo.SHA256.create();
+        for (var i = 0; i < uint.byteLength; i = i + 100000) {
+          var c = String.fromCharCode.apply(null, uint.slice(i, i + 100000));
+          sha.update(c);
+        }
+        var h = sha.finalize();
+        console.log("hash :" + h);
+        this.setState({ filehash: h });
       };
       reader.readAsArrayBuffer(file);
     }
