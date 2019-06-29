@@ -5,6 +5,7 @@ import * as crypto from "crypto-js";
 import Portis from "@portis/web3";
 import Web3 from "web3";
 import EthSigUtil from "eth-sig-util";
+import bigInt from "big-integer";
 
 class CompanyHome extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class CompanyHome extends Component {
   loadfile = () => {
     const env = this;
     axios
-      .get("http://localhost:3000/certificates/1561634979014-t.png", {
+      .get("http://localhost:3000/certificates/test2.pdf", {
         responseType: "arraybuffer"
       })
       .then(function(response) {
@@ -263,9 +264,11 @@ class CompanyHome extends Component {
       abi,
       "0x6c9151f24e1c17c08246a38e0488baf0eb032c30"
     );
-    var t = await todoList.methods
-      .getCounter("0xc45178334981c67098D503c753C40a3912E79522")
-      .call();
+    var t =
+      0 +
+      (await todoList.methods
+        .getCounter("0x4ab372865DD07aCfFba20eC84c0c60EF8bf84aE0")
+        .call());
     // t=JSON.stringify(t);
     console.log(t);
   }
